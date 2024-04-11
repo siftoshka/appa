@@ -1,7 +1,63 @@
 <resources>
-    <string name="cyclone">Cyclone</string>
-    <string name="open_github">Open github</string>
-    <string name="run">Run</string>
-    <string name="stop">Stop</string>
-    <string name="theme">Theme</string>
+    <string name="app_name">appa</string>
+    <string name="app_desc">Embrace apps you love</string>
+
+    <!-- Common buttons -->
+    <string name="btn_skip">Skip</string>
+    <string name="btn_next">Next</string>
+    <string name="btn_start">Get started</string>
+    <string name="btn_settings">Go to settings</string>
+    <string name="btn_back">Return back</string>
+    <string name="btn_selected">Selected</string>
+    <string name="btn_change">Change</string>
+    <string name="btn_apply">Apply</string>
+    <string name="btn_continue">Continue</string>
+    <string name="btn_confirm">Confirm</string>
+    <string name="btn_save_changes">Save changes</string>
+    <string name="btn_positive_delete">Yes, please</string>
+    <string name="btn_negative_delete">Cancel</string>
+
+    <!-- Onboarding -->
+    <string name="title_onboarding_1">Explore the app</string>
+    <string name="desc_onboarding_1">1Dilim is a new way of fighting food waste. Save surplus food from your favorite restaurants, cafes, and supermarkets</string>
+    <string name="title_onboarding_2">Reserve a meal</string>
+    <string name="desc_onboarding_2">Reserve an interesting bag of food close to you from a store within a given collection time</string>
+    <string name="title_onboarding_3">Collect your food</string>
+    <string name="desc_onboarding_3">Show the reservation code when you arrive at the store, swipe to confirm the collection, and enjoy your meal!</string>
+
+    <!-- Login -->
+    <string name="text_email">Email</string>
+    <string name="title_sign_log_in">Enter the app</string>
+    <string name="field_email">Email</string>
+    <string name="title_verification">Verification</string>
+    <string name="text_title_verification">Email code is on the way</string>
+    <string name="text_desc_verification">We've sent the Email code to %1$s.\n\nType the code from the Email below. It may take several minutes to receive an Email.</string>
+
+    <!-- Settings -->
+    <string name="title_section_general">General</string>
+    <string name="field_your_profile">Your profile</string>
+    <string name="title_section_about">About</string>
+    <string name="field_app_version">App Version</string>
+    <string name="field_help_center">Help Center</string>
+    <string name="field_documents">Documents</string>
+    <string name="field_terms_conditions">Terms and conditions</string>
+    <string name="field_privacy_policy">Privacy policy</string>
+
+    <!-- Profile -->
+    <string name="title_profile">Profile</string>
+    <string name="field_name">Name</string>
+    <string name="field_delete_account">Delete account</string>
+    <string name="desc_delete_account">Are you sure you want to delete your account?\nWe're very sad you are leaving us :(</string>
+    <string name="field_logout">Log out</string>
+    <string name="desc_logout">Are you sure you want to log out?</string>
+
+    <!-- Error messages -->
+    <string name="phone_empty_error">Phone number is required</string>
+    <string name="phone_incomplete_error">Phone number must be complete</string>
+    <string name="phone_number_error">Phone number should contains only numbers</string>
+    <string name="internet_lost_error">No internet connection</string>
+    <string name="bad_request_error">Bad request</string>
+    <string name="server_error">Server error</string>
+    <string name="basic_error">Something went wrong</string>
+
 </resources>
