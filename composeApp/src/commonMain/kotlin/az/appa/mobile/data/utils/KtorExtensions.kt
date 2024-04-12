@@ -8,6 +8,7 @@ import appa.composeapp.generated.resources.bad_request_error
 import appa.composeapp.generated.resources.server_error
 import az.appa.mobile.data.api.response.ErrorBodyResponse
 import az.appa.mobile.domain.utils.Resource
+import az.appa.mobile.getPlatform
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -32,6 +33,7 @@ suspend inline fun <reified Response> HttpClient.safeGet(
         val response = get(path) {
             header(HttpHeaders.Authorization, "Bearer")
             header(HttpHeaders.Accept, ContentType.Application.Json)
+            header(CustomHeaders.Platform, getPlatform())
             contentType(ContentType.Application.Json)
             header(HttpHeaders.CacheControl, "no-cache")
             params?.let { parameter(it.first, params.second) }
@@ -56,6 +58,7 @@ suspend inline fun <reified Response> HttpClient.safePost(
                 header(HttpHeaders.Authorization, "Bearer")
             }
             header(HttpHeaders.Accept, ContentType.Application.Json)
+            header(CustomHeaders.Platform, getPlatform())
             contentType(ContentType.Application.Json)
             header(HttpHeaders.CacheControl, "no-cache")
             setBody(body)
@@ -77,6 +80,7 @@ suspend inline fun <reified Response> HttpClient.safePut(
     try {
         val response = put(path) {
             header(HttpHeaders.Authorization, "Bearer")
+            header(CustomHeaders.Platform, getPlatform())
             header(HttpHeaders.Accept, ContentType.Application.Json)
             contentType(ContentType.Application.Json)
             header(HttpHeaders.CacheControl, "no-cache")

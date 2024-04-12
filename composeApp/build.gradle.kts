@@ -16,8 +16,8 @@ kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "${JavaVersion.VERSION_1_8}"
-                freeCompilerArgs += "-Xjdk-release=${JavaVersion.VERSION_1_8}"
+                jvmTarget = "${JavaVersion.VERSION_11}"
+                freeCompilerArgs += "-Xjdk-release=${JavaVersion.VERSION_11}"
             }
         }
         //https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html
@@ -69,6 +69,7 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.kamel.image.loader)
             implementation(libs.lottie.kmp)
+            implementation(libs.precompose)
         }
 
         commonTest.dependencies {
@@ -125,8 +126,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     buildFeatures {
         compose = true

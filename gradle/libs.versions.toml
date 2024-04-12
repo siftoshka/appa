@@ -19,6 +19,7 @@ stately-common = "2.0.5"
 kamel = "0.9.1"
 lottie-kmp = "1.1.0"
 sqlDelight = "2.0.1"
+precompose = "1.6.0"
 
 [libraries]
 
@@ -49,6 +50,7 @@ sqlDelight-driver-js = { module = "app.cash.sqldelight:web-worker-driver", versi
 stately-common = { module = "co.touchlab:stately-common", version.ref = "stately-common" }
 kamel-image-loader = { module = "media.kamel:kamel-image", version.ref = "kamel" }
 lottie-kmp = { module = "io.github.alexzhirkevich:compottie", version.ref = "lottie-kmp" }
+precompose = { module = "moe.tlaster:precompose", version.ref = "precompose" }
 
 [plugins]
 

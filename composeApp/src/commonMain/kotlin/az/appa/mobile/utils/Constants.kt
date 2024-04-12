@@ -2,7 +2,7 @@ package az.appa.mobile.utils
 
 object Constants {
 
-    const val BASE_URL = "http://62.3.32.222:8081"
+    const val BASE_URL = "http://62.3.32.222:28080/api"
 
     const val EMPTY = ""
 

@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class VerifyResponse(
-    var accessToken: String
+    var token: String
 )
