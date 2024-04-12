@@ -20,21 +20,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import appa.composeapp.generated.resources.*
+import az.appa.mobile.domain.utils.AppaException
 import az.appa.mobile.theme.spacing
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun SnackMessage(
-    value: String,
+    value: AppaException? = null,
     onChangeListener: (() -> Unit)? = null
 ) {
     val scope = rememberCoroutineScope()
 
-    AnimatedVisibility(value.isNotEmpty()) {
+    val error = when (value) {
+        AppaException.BadRequestException -> stringResource(Res.string.bad_request_error)
+        AppaException.GeneralException -> stringResource(Res.string.basic_error)
+        AppaException.ServerDownException -> stringResource(Res.string.server_error)
+        null -> ""
+    }
+
+    AnimatedVisibility(error.isNotEmpty()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -50,7 +59,7 @@ fun SnackMessage(
                         tonalElevation = 2.dp,
                         headlineContent = {
                             Text(
-                                text = value,
+                                text = error,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onError,
                                 fontWeight = FontWeight.Medium
@@ -59,13 +68,13 @@ fun SnackMessage(
                         leadingContent = {
                             Icon(
                                 painter = painterResource(Res.drawable.ic_about),
-                                contentDescription = value,
+                                contentDescription = error,
                                 modifier = Modifier.size(20.dp),
                                 tint = MaterialTheme.colorScheme.onError
                             )
                         }
                     )
-                    LaunchedEffect(value.isNotBlank()) {
+                    LaunchedEffect(error.isNotBlank()) {
                         scope.launch {
                             delay(1000L)
                             onChangeListener?.let { it() }

@@ -9,6 +9,9 @@ import az.appa.mobile.di.dataModule
 import az.appa.mobile.di.networkModule
 import az.appa.mobile.di.viewModelModule
 import az.appa.mobile.domain.repository.SettingsRepository
+import az.appa.mobile.presentation.base.pop
+import az.appa.mobile.presentation.base.push
+import az.appa.mobile.presentation.base.replace
 import az.appa.mobile.presentation.feature.home.HomeScreen
 import az.appa.mobile.presentation.feature.login.LoginScreen
 import az.appa.mobile.presentation.feature.onboarding.OnboardingScreen
@@ -45,28 +48,20 @@ internal fun App() {
                 ) {
                     scene(Route.OnboardingScreen.route) {
                         OnboardingScreen(
-                            onNavLogin = { navigator.navigate(Route.LoginScreen.route) }
+                            onNavLogin = { navigator.push(Route.LoginScreen.route) }
                         )
                     }
                     scene(Route.LoginScreen.route) {
                         LoginScreen(
-                            onNavVerification = { navigator.navigate(Route.VerificationScreen.route + "/$it") }
+                            onNavVerification = { navigator.push(Route.VerificationScreen.route + "/$it") }
                         )
                     }
                     scene(Route.VerificationScreen.route + "/{email}") {
                         val email = it.path<String>("email")!!
                         VerificationScreen(
                             email = email,
-                            goBack = { navigator.goBack() },
-                            onNavHome = {
-                                navigator.navigate(
-                                    Route.HomeScreen.route,
-                                    options = NavOptions(
-                                        launchSingleTop = true,
-                                        popUpTo = PopUpTo.First(inclusive = true)
-                                    )
-                                )
-                            }
+                            goBack = { navigator.pop() },
+                            onNavHome = { navigator.replace(Route.HomeScreen.route) }
                         )
                     }
                     scene(Route.HomeScreen.route) {

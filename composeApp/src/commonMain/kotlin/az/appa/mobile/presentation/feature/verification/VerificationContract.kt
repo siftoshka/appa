@@ -1,5 +1,6 @@
 package az.appa.mobile.presentation.feature.verification
 
+import az.appa.mobile.domain.utils.AppaException
 import az.appa.mobile.presentation.base.UiEffect
 import az.appa.mobile.presentation.base.UiEvent
 import az.appa.mobile.presentation.base.UiState
@@ -17,7 +18,7 @@ object VerificationContract {
         val otp: String = "",
         val isLoading: Boolean = false,
         val isSuccess: Boolean = false,
-        val error: String = ""
+        val error: AppaException? = null
     ) : UiState
 
     sealed interface Effect : UiEffect {

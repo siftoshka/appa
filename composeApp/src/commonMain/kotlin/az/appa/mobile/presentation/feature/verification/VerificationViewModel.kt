@@ -35,7 +35,7 @@ class VerificationViewModel(
                 setEffect { VerificationContract.Effect.NavigateBack }
             }
 
-            VerificationContract.Event.CleanError -> setState { copy(error = "") }
+            VerificationContract.Event.CleanError -> setState { copy(error = null) }
         }
     }
 
@@ -47,7 +47,7 @@ class VerificationViewModel(
                     setState { copy(isLoading = false) }
                     when (result) {
                         is Resource.Error -> setState {
-                            copy(otp = "", error = result.message.orEmpty())
+                            copy(otp = "", error = result.exception)
                         }
 
                         is Resource.Success -> {

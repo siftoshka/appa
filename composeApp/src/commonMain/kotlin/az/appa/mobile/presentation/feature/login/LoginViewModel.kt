@@ -1,10 +1,12 @@
 package az.appa.mobile.presentation.feature.login
 
 import appa.composeapp.generated.resources.Res
-import appa.composeapp.generated.resources.phone_empty_error
+import appa.composeapp.generated.resources.email_empty_error
+import appa.composeapp.generated.resources.email_invalid_error
 import az.appa.mobile.domain.repository.AuthRepository
 import az.appa.mobile.domain.utils.Resource
 import az.appa.mobile.presentation.base.BaseViewModel
+import az.appa.mobile.utils.isEmailValid
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -26,7 +28,7 @@ class LoginViewModel(
 
             LoginContract.Event.OnLogin -> login()
             LoginContract.Event.CleanError -> {
-                setState { copy(error = "") }
+                setState { copy(error = null) }
             }
 
             LoginContract.Event.CleanState -> {
@@ -50,7 +52,7 @@ class LoginViewModel(
                     setState { copy(isLoading = false) }
                     when (result) {
                         is Resource.Error -> {
-                            setState { copy(error = result.message ?: "") }
+                            setState { copy(error = result.exception) }
                         }
 
                         is Resource.Success -> {
@@ -65,8 +67,13 @@ class LoginViewModel(
     private suspend fun validateLogin(): Boolean {
         return when {
             currentState.email.isEmpty() -> {
-                val emptyPhoneNumber = getString(Res.string.phone_empty_error)
-                setState { copy(emailError = emptyPhoneNumber) }
+                val emptyEmail = getString(Res.string.email_empty_error)
+                setState { copy(emailError = emptyEmail) }
+                false
+            }
+            !currentState.email.isEmailValid() -> {
+                val invalidEmail = getString(Res.string.email_invalid_error)
+                setState { copy(emailError = invalidEmail) }
                 false
             }
 

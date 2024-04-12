@@ -52,9 +52,8 @@
     <string name="desc_logout">Are you sure you want to log out?</string>
 
     <!-- Error messages -->
-    <string name="phone_empty_error">Phone number is required</string>
-    <string name="phone_incomplete_error">Phone number must be complete</string>
-    <string name="phone_number_error">Phone number should contains only numbers</string>
+    <string name="email_empty_error">Phone number is required</string>
+    <string name="email_invalid_error">Email is invalid</string>
     <string name="internet_lost_error">No internet connection</string>
     <string name="bad_request_error">Bad request</string>
     <string name="server_error">Server error</string>

@@ -1,5 +1,6 @@
 package az.appa.mobile.presentation.feature.login
 
+import az.appa.mobile.domain.utils.AppaException
 import az.appa.mobile.presentation.base.UiEffect
 import az.appa.mobile.presentation.base.UiEvent
 import az.appa.mobile.presentation.base.UiState
@@ -18,7 +19,7 @@ object LoginContract {
         val emailError: String = "",
         val isLoading: Boolean = false,
         val isFocused: Boolean = false,
-        val error: String = ""
+        val error: AppaException? = null
     ) : UiState
 
     sealed interface Effect : UiEffect {

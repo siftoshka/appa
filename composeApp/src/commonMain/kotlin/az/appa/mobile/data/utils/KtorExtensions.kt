@@ -1,12 +1,11 @@
 @file:Suppress("NON_PUBLIC_CALL_FROM_PUBLIC_INLINE")
-@file:OptIn(ExperimentalResourceApi::class)
 
 package az.appa.mobile.data.utils
 
-import appa.composeapp.generated.resources.Res
-import appa.composeapp.generated.resources.bad_request_error
-import appa.composeapp.generated.resources.server_error
 import az.appa.mobile.data.api.response.ErrorBodyResponse
+import az.appa.mobile.domain.utils.AppaException
+import az.appa.mobile.domain.utils.AppaException.BadRequestException
+import az.appa.mobile.domain.utils.AppaException.ServerDownException
 import az.appa.mobile.domain.utils.Resource
 import az.appa.mobile.getPlatform
 import io.ktor.client.HttpClient
@@ -23,8 +22,6 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.getString
 
 suspend inline fun <reified Response> HttpClient.safeGet(
     path: String, params: Pair<String, Any>? = null
@@ -40,12 +37,12 @@ suspend inline fun <reified Response> HttpClient.safeGet(
         }
         when (response.status.value) {
             in 200..299 -> emit(Resource.Success(response.body()))
-            in 300..399 -> emit(Resource.Error(getString(Res.string.bad_request_error)))
+            in 300..399 -> emit(Resource.Error(BadRequestException))
             in 400..499 -> emit(Resource.Error(response.errorBody()))
-            in 500..599 -> emit(Resource.Error(getString(Res.string.server_error)))
+            in 500..599 -> emit(Resource.Error(ServerDownException))
         }
     } catch (e: Exception) {
-        emit(Resource.Error(getString(Res.string.server_error)))
+        emit(Resource.Error(ServerDownException))
     }
 }
 
@@ -65,12 +62,12 @@ suspend inline fun <reified Response> HttpClient.safePost(
         }
         when (response.status.value) {
             in 200..299 -> emit(Resource.Success(response.body()))
-            in 300..399 -> emit(Resource.Error(getString(Res.string.bad_request_error)))
+            in 300..399 -> emit(Resource.Error(BadRequestException))
             in 400..499 -> emit(Resource.Error(response.errorBody()))
-            in 500..599 -> emit(Resource.Error(getString(Res.string.server_error)))
+            in 500..599 -> emit(Resource.Error(ServerDownException))
         }
     } catch (e: Exception) {
-        emit(Resource.Error(getString(Res.string.server_error)))
+        emit(Resource.Error(ServerDownException))
     }
 }
 
@@ -88,18 +85,20 @@ suspend inline fun <reified Response> HttpClient.safePut(
         }
         when (response.status.value) {
             in 200..299 -> emit(Resource.Success(response.body()))
-            in 300..399 -> emit(Resource.Error(getString(Res.string.bad_request_error)))
+            in 300..399 -> emit(Resource.Error(BadRequestException))
             in 400..499 -> emit(Resource.Error(response.errorBody()))
-            in 500..599 -> emit(Resource.Error(getString(Res.string.server_error)))
+            in 500..599 -> emit(Resource.Error(ServerDownException))
         }
     } catch (e: Exception) {
-        emit(Resource.Error(getString(Res.string.server_error)))
+        emit(Resource.Error(ServerDownException))
     }
 }
 
-suspend inline fun HttpResponse.errorBody(): String =
+suspend inline fun HttpResponse.errorBody(): AppaException =
     try {
-        body<ErrorBodyResponse>().message
+        when (body<ErrorBodyResponse>().message) {
+            else -> BadRequestException
+        }
     } catch (e: Exception) {
-        getString(Res.string.bad_request_error)
+        ServerDownException
     }
