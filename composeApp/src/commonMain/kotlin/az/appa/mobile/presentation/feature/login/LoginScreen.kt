@@ -137,7 +137,10 @@ fun LoginScreen(
                 textColor = MaterialTheme.colorScheme.onPrimary,
                 shape = MaterialTheme.shapes.large,
                 text = stringResource(Res.string.title_sign_log_in)
-            ) { viewModel.setEvent(LoginContract.Event.OnLogin) }
+            ) {
+                keyboardController?.hide()
+                viewModel.setEvent(LoginContract.Event.OnLogin)
+            }
         }
         SnackMessage(state.error) { viewModel.setEvent(LoginContract.Event.CleanError) }
         DimmedLoading(state.isLoading)

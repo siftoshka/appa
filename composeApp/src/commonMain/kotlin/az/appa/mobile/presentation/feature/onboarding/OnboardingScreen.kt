@@ -9,11 +9,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerDefaults
@@ -29,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -64,17 +68,13 @@ fun OnboardingScreen(
             when (effect) {
                 OnboardingContract.Effect.OpenLoginScreen -> {
                     onNavLogin()
-                    //navigator.replace(LoginScreen())
                 }
             }
         }
     }
 
-    Surface(
-        color = MaterialTheme.colorScheme.background,
-        modifier = Modifier.fillMaxSize().systemBarsPadding()
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Surface(color = MaterialTheme.colorScheme.surfaceVariant, modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing), horizontalAlignment = Alignment.CenterHorizontally) {
             SkipButton(pagerState = pagerState, size = pages.size - 1)
             HorizontalPager(
                 modifier = Modifier.weight(1f),
@@ -166,7 +166,7 @@ private fun NextButton(
     val lastPage = pagerState.currentPage == 2
     val fraction by animateFloatAsState(if (lastPage) 1f else 0.5f)
     val backgroundColor = if (lastPage) MaterialTheme.colorScheme.primary
-    else MaterialTheme.colorScheme.background
+    else Color.Transparent
     val text = if (lastPage) Res.string.btn_start else Res.string.btn_next
     val textColor = if (lastPage) MaterialTheme.colorScheme.onPrimary
     else MaterialTheme.colorScheme.onBackground

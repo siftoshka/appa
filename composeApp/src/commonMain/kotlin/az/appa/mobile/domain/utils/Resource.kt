@@ -1,6 +1,6 @@
 package az.appa.mobile.domain.utils
 
-sealed class Resource<T>(val data: T? = null, val exception: AppaException? = null) {
-    class Success<T>(data: T) : Resource<T>(data)
-    class Error<T>(exception: AppaException) : Resource<T>(exception = exception)
+sealed interface Resource<out D, out E: AppaException> {
+    data class Success<out D, out E: AppaException>(val data: D) : Resource<D, E>
+    data class Error<out D, out E: AppaException>(val exception: E) : Resource<D, E>
 }

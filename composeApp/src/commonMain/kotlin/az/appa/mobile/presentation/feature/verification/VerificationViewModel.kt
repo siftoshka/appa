@@ -44,14 +44,13 @@ class VerificationViewModel(
             authRepository.verification(email, currentState.otp)
                 .onStart { setState { copy(isLoading = true) } }
                 .onEach { result ->
-                    setState { copy(isLoading = false) }
                     when (result) {
                         is Resource.Error -> setState {
                             copy(otp = "", error = result.exception)
                         }
 
                         is Resource.Success -> {
-                            settingsRepository.accessToken = result.data?.token.orEmpty()
+                            settingsRepository.accessToken = result.data.token
                             setEffect { VerificationContract.Effect.OpenHomeScreen }
                         }
                     }

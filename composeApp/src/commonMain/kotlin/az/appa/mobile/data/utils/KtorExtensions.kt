@@ -12,7 +12,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.header
-import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
@@ -24,16 +23,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 suspend inline fun <reified Response> HttpClient.safeGet(
-    path: String, params: Pair<String, Any>? = null
-): Flow<Resource<Response>> = flow {
+    path: String, body: Any, token: String = "", shouldBeAuthorized: Boolean = false
+): Flow<Resource<Response, AppaException>> = flow {
     try {
         val response = get(path) {
-            header(HttpHeaders.Authorization, "Bearer")
+            if (shouldBeAuthorized) {
+                header(HttpHeaders.Authorization, "Bearer $token")
+            }
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header(CustomHeaders.Platform, getPlatform())
             contentType(ContentType.Application.Json)
             header(HttpHeaders.CacheControl, "no-cache")
-            params?.let { parameter(it.first, params.second) }
+            setBody(body)
         }
         when (response.status.value) {
             in 200..299 -> emit(Resource.Success(response.body()))
@@ -47,12 +48,12 @@ suspend inline fun <reified Response> HttpClient.safeGet(
 }
 
 suspend inline fun <reified Response> HttpClient.safePost(
-    path: String, body: Any, shouldBeAuthorized: Boolean = false
-): Flow<Resource<Response>> = flow {
+    path: String, body: Any, token: String = "", shouldBeAuthorized: Boolean = false
+): Flow<Resource<Response, AppaException>> = flow {
     try {
         val response = post(path) {
             if (shouldBeAuthorized) {
-                header(HttpHeaders.Authorization, "Bearer")
+                header(HttpHeaders.Authorization, "Bearer $token")
             }
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header(CustomHeaders.Platform, getPlatform())
@@ -72,11 +73,13 @@ suspend inline fun <reified Response> HttpClient.safePost(
 }
 
 suspend inline fun <reified Response> HttpClient.safePut(
-    path: String, body: Any
-): Flow<Resource<Response>> = flow {
+    path: String, body: Any, token: String = "", shouldBeAuthorized: Boolean = false
+): Flow<Resource<Response, AppaException>> = flow {
     try {
         val response = put(path) {
-            header(HttpHeaders.Authorization, "Bearer")
+            if (shouldBeAuthorized) {
+                header(HttpHeaders.Authorization, "Bearer $token")
+            }
             header(CustomHeaders.Platform, getPlatform())
             header(HttpHeaders.Accept, ContentType.Application.Json)
             contentType(ContentType.Application.Json)

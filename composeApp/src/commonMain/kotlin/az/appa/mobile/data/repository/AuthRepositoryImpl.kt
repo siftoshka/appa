@@ -5,6 +5,7 @@ import az.appa.mobile.data.api.request.VerifyRequest
 import az.appa.mobile.data.api.response.VerifyResponse
 import az.appa.mobile.data.utils.safePost
 import az.appa.mobile.domain.repository.AuthRepository
+import az.appa.mobile.domain.utils.AppaException
 import az.appa.mobile.domain.utils.NetworkPaths
 import az.appa.mobile.domain.utils.Resource
 import az.appa.mobile.utils.Constants.BASE_URL
@@ -15,7 +16,7 @@ class AuthRepositoryImpl(
     private val httpClient: HttpClient,
 ) : AuthRepository {
 
-    override suspend fun login(email: String): Flow<Resource<Unit>> {
+    override suspend fun login(email: String): Flow<Resource<Unit, AppaException>> {
         return httpClient.safePost(
             path = "$BASE_URL/${NetworkPaths.Auth.Login}",
             body = LoginRequest(email)
@@ -25,7 +26,7 @@ class AuthRepositoryImpl(
     override suspend fun verification(
         email: String,
         otpCode: String
-    ): Flow<Resource<VerifyResponse>> {
+    ): Flow<Resource<VerifyResponse, AppaException>> {
         return httpClient.safePost(
             path = "$BASE_URL/${NetworkPaths.Auth.Verify}",
             body = VerifyRequest(email, otpCode),
