@@ -12,16 +12,16 @@ import az.appa.mobile.domain.repository.SettingsRepository
 import az.appa.mobile.presentation.base.pop
 import az.appa.mobile.presentation.base.push
 import az.appa.mobile.presentation.base.replace
+import az.appa.mobile.presentation.feature.boxmanager.BoxManagerScreen
 import az.appa.mobile.presentation.feature.home.HomeScreen
 import az.appa.mobile.presentation.feature.login.LoginScreen
 import az.appa.mobile.presentation.feature.onboarding.OnboardingScreen
 import az.appa.mobile.presentation.feature.verification.VerificationScreen
 import az.appa.mobile.theme.AppTheme
+import az.appa.mobile.utils.BoxManagerState
 import az.appa.mobile.utils.Route
 import moe.tlaster.precompose.PreComposeApp
 import moe.tlaster.precompose.navigation.NavHost
-import moe.tlaster.precompose.navigation.NavOptions
-import moe.tlaster.precompose.navigation.PopUpTo
 import moe.tlaster.precompose.navigation.SwipeProperties
 import moe.tlaster.precompose.navigation.path
 import moe.tlaster.precompose.navigation.rememberNavigator
@@ -43,7 +43,7 @@ internal fun App() {
                     else -> Route.OnboardingScreen.route
                 }
                 NavHost(
-                    navigator = navigator, initialRoute = initialRoute,
+                    navigator = navigator, initialRoute = Route.HomeScreen.route,
                     navTransition = DefaultNavTransition, swipeProperties = SwipeProperties()
                 ) {
                     scene(Route.OnboardingScreen.route) {
@@ -57,15 +57,24 @@ internal fun App() {
                         )
                     }
                     scene(Route.VerificationScreen.route + "/{email}") {
-                        val email = it.path<String>("email")!!
+                        val email = it.path<String>("email").orEmpty()
                         VerificationScreen(
                             email = email,
                             goBack = { navigator.pop() },
                             onNavHome = { navigator.replace(Route.HomeScreen.route) }
                         )
                     }
+                    scene(Route.BoxManagerScreen.route + "/{state}") {
+                        val state = BoxManagerState.fromValue(it.path<String>("state").orEmpty())
+                        BoxManagerScreen(
+                            boxManagerState = state,
+                            goBack = { navigator.pop() }
+                        )
+                    }
                     scene(Route.HomeScreen.route) {
-                        HomeScreen()
+                        HomeScreen(
+                            onNavBoxManager = { navigator.push(Route.BoxManagerScreen.route + "/$it") }
+                        )
                     }
                 }
             }

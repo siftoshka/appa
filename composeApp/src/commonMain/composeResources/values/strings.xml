@@ -11,6 +11,7 @@
     <string name="btn_selected">Selected</string>
     <string name="btn_change">Change</string>
     <string name="btn_apply">Apply</string>
+    <string name="btn_add">Add</string>
     <string name="btn_continue">Continue</string>
     <string name="btn_confirm">Confirm</string>
     <string name="btn_save_changes">Save changes</string>
@@ -32,6 +33,13 @@
     <string name="title_verification">Verification</string>
     <string name="text_title_verification">Email code is on the way</string>
     <string name="text_desc_verification">We've sent the Email code to %1$s.\n\nType the code from the Email below. It may take several minutes to receive an Email.</string>
+
+    <!-- Box Manager -->
+    <string name="title_box_manager">Title</string>
+    <string name="desc_box_manager">Description</string>
+    <string name="text_add_new_app">Add new app</string>
+    <string name="desc_add_new_app">Level up your app collection! Paste those Apple Store or Google Play links right here.</string>
+    <string name="field_add_new_app">Paste link here</string>
 
     <!-- Settings -->
     <string name="title_section_general">General</string>

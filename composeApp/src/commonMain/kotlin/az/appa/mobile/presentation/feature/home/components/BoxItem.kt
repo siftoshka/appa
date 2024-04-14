@@ -21,33 +21,37 @@ import androidx.compose.ui.unit.dp
 import az.appa.mobile.domain.model.Box
 import az.appa.mobile.domain.model.UniversalApp
 import az.appa.mobile.presentation.common.AppIcon
+import az.appa.mobile.presentation.common.MoreIcon
 import az.appa.mobile.theme.spacing
 
 @Composable
-fun BoxItem(box: Box) {
+fun BoxItem(box: Box, onPerformClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        onClick = { }
+        onClick = { onPerformClick() }
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            AppsRow(box.apps)
+            AppsRow(box.apps) { onPerformClick() }
             BottomSection(box.title, box.subtitle)
         }
     }
 }
 
 @Composable
-private fun AppsRow(apps: List<UniversalApp>) {
+private fun AppsRow(apps: List<UniversalApp>, onMoreClick: () -> Unit) {
     LazyRow(
         modifier = Modifier.width(360.dp),
         contentPadding = PaddingValues(12.dp),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
     ) {
-        items(apps) {
-            AppIcon(it)
+        if (apps.size > 4) {
+            items(apps.take(4)) { AppIcon(it) }
+            item { MoreIcon { onMoreClick() } }
+        } else {
+            items(apps) { AppIcon(it) }
         }
     }
 }

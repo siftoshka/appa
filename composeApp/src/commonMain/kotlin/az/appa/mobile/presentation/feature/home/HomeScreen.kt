@@ -20,11 +20,13 @@ import az.appa.mobile.domain.model.UniversalApp
 import az.appa.mobile.presentation.feature.home.components.BoxItem
 import az.appa.mobile.presentation.feature.home.components.HomeBar
 import az.appa.mobile.theme.spacing
+import az.appa.mobile.utils.BoxManagerState
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.koinInject
 
 @Composable
 fun HomeScreen(
+    onNavBoxManager: (state: String) -> Unit
 ) {
     val viewModel = koinInject<HomeViewModel>()
     val state by viewModel.uiState.collectAsState()
@@ -44,13 +46,15 @@ fun HomeScreen(
     ) {
         Column {
             HomeBar(
-                onComposeClick = {},
+                onComposeClick = { onNavBoxManager(BoxManagerState.CREATE.name) },
                 onSettingsClick = {}
             )
             val box = Box(
                 id = 1, title = "Subway Surfers", subtitle = "New games every day",
-                apps = listOf(UniversalApp(), UniversalApp(), UniversalApp(),
-                    UniversalApp(), UniversalApp(), UniversalApp())
+                apps = listOf(
+                    UniversalApp(), UniversalApp(), UniversalApp(),
+                    UniversalApp(), UniversalApp(), UniversalApp()
+                )
             )
             Column(modifier = Modifier.fillMaxWidth()) {
                 LazyRow(
@@ -64,7 +68,9 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
                 ) {
                     items(listOf(box)) {
-                        BoxItem(it)
+                        BoxItem(it) {
+                            onNavBoxManager(BoxManagerState.VIEW.name)
+                        }
                     }
                 }
             }
