@@ -1,50 +1,62 @@
 package az.appa.mobile.presentation.feature.boxmanager.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text2.BasicTextField2
-import androidx.compose.foundation.text2.input.TextFieldLineLimits
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import appa.composeapp.generated.resources.Res
 import appa.composeapp.generated.resources.desc_box_manager
 import appa.composeapp.generated.resources.title_box_manager
+import az.appa.mobile.presentation.feature.boxmanager.BoxManagerContract
 import az.appa.mobile.theme.spacing
 import az.appa.mobile.utils.BoxManagerState
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun BoxManagerBar(
+fun BoxManagerInfo(
     boxManagerState: BoxManagerState,
-    title: String,
-    subtitle: String,
+    state: BoxManagerContract.State,
     onTitleChange: (String) -> Unit,
     onSubtitleChange: (String) -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var inputTitle by remember(state.title) { mutableStateOf(state.title) }
+    var inputSubtitle by remember(state.subtitle) { mutableStateOf(state.subtitle) }
+
     Column(modifier = Modifier.fillMaxWidth().padding(horizontal = MaterialTheme.spacing.default)) {
         Box {
-            BasicTextField2(
-                value = title,
+            BasicTextField(
+                value = inputTitle,
                 textStyle = MaterialTheme.typography.titleLarge.copy(
                     color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight.Bold
                 ),
-                onValueChange = { onTitleChange(it) },
+                onValueChange = {
+                    inputTitle = it
+                    onTitleChange(it)
+                },
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
-                lineLimits = TextFieldLineLimits.SingleLine,
+                singleLine = true,
                 readOnly = boxManagerState == BoxManagerState.VIEW
             )
-            if (title.isEmpty() && boxManagerState != BoxManagerState.VIEW) {
+            if (inputTitle.isEmpty() && boxManagerState != BoxManagerState.VIEW) {
                 Text(
                     text = stringResource(Res.string.title_box_manager),
                     style = MaterialTheme.typography.titleLarge,
@@ -56,18 +68,23 @@ fun BoxManagerBar(
         }
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
         Box {
-            BasicTextField2(
-                value = subtitle,
-                textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground),
-                onValueChange = { onSubtitleChange(it) },
+            BasicTextField(
+                value = inputSubtitle,
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onBackground),
+                onValueChange = {
+                    inputSubtitle = it
+                    onSubtitleChange(it)
+                },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
-                lineLimits = TextFieldLineLimits.MultiLine(maxHeightInLines = 3),
+                maxLines = 3,
                 readOnly = boxManagerState == BoxManagerState.VIEW
             )
-            if (subtitle.isEmpty() && boxManagerState != BoxManagerState.VIEW) {
+            if (inputSubtitle.isEmpty() && boxManagerState != BoxManagerState.VIEW) {
                 Text(
                     text = stringResource(Res.string.desc_box_manager),
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
                     modifier = Modifier.fillMaxWidth()
                 )

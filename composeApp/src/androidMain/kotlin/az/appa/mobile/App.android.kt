@@ -40,3 +40,5 @@ internal actual fun openUrl(url: String?) {
 internal actual fun getPlatform(): String {
     return "android"
 }
+
+internal actual fun isAndroid() = true

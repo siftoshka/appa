@@ -2,9 +2,12 @@ package az.appa.mobile
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.dp
 import az.appa.mobile.di.dataModule
 import az.appa.mobile.di.networkModule
 import az.appa.mobile.di.viewModelModule
@@ -28,6 +31,7 @@ import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.navigation.transition.NavTransition
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
+import kotlin.UInt.Companion.MAX_VALUE
 
 @Composable
 internal fun App() {
@@ -43,8 +47,10 @@ internal fun App() {
                     else -> Route.OnboardingScreen.route
                 }
                 NavHost(
-                    navigator = navigator, initialRoute = Route.HomeScreen.route,
-                    navTransition = DefaultNavTransition, swipeProperties = SwipeProperties()
+                    navigator = navigator,
+                    initialRoute = Route.HomeScreen.route,
+                    navTransition = DefaultNavTransition,
+                    swipeProperties = SwipeProperties(spaceToSwipe = 100.dp)
                 ) {
                     scene(Route.OnboardingScreen.route) {
                         OnboardingScreen(
@@ -85,8 +91,13 @@ internal fun App() {
 private val DefaultNavTransition = NavTransition(
     createTransition = slideInHorizontally(tween(easing = LinearEasing)) { it },
     destroyTransition = slideOutHorizontally(tween(easing = LinearEasing)) { it },
+    pauseTransition = slideOutHorizontally(tween(easing = LinearEasing)) { -it / 2 },
+    resumeTransition = slideInHorizontally(tween(easing = LinearEasing)) { -it / 2 },
+    exitTargetContentZIndex = 1f
 )
 
 internal expect fun openUrl(url: String?)
 
 internal expect fun getPlatform(): String
+
+internal expect fun isAndroid(): Boolean
