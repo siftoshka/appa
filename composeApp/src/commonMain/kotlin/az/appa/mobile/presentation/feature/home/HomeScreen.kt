@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import az.appa.mobile.domain.model.Box
 import az.appa.mobile.domain.model.UniversalApp
+import az.appa.mobile.hapticFeedback
 import az.appa.mobile.presentation.feature.home.components.BoxItem
 import az.appa.mobile.presentation.feature.home.components.HomeBar
 import az.appa.mobile.theme.spacing
@@ -46,7 +47,10 @@ fun HomeScreen(
     ) {
         Column {
             HomeBar(
-                onComposeClick = { onNavBoxManager(BoxManagerState.CREATE.name) },
+                onComposeClick = {
+                    hapticFeedback()
+                    onNavBoxManager(BoxManagerState.CREATE.name)
+                },
                 onSettingsClick = {}
             )
             val box = Box(

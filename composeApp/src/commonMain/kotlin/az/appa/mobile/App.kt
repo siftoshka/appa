@@ -2,8 +2,6 @@ package az.appa.mobile
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
@@ -31,7 +29,6 @@ import moe.tlaster.precompose.navigation.rememberNavigator
 import moe.tlaster.precompose.navigation.transition.NavTransition
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
-import kotlin.UInt.Companion.MAX_VALUE
 
 @Composable
 internal fun App() {
@@ -97,6 +94,8 @@ private val DefaultNavTransition = NavTransition(
 )
 
 internal expect fun openUrl(url: String?)
+
+internal expect fun hapticFeedback()
 
 internal expect fun getPlatform(): String
 
