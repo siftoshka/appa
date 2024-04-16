@@ -17,6 +17,7 @@ import az.appa.mobile.presentation.feature.boxmanager.BoxManagerScreen
 import az.appa.mobile.presentation.feature.home.HomeScreen
 import az.appa.mobile.presentation.feature.login.LoginScreen
 import az.appa.mobile.presentation.feature.onboarding.OnboardingScreen
+import az.appa.mobile.presentation.feature.settings.SettingsScreen
 import az.appa.mobile.presentation.feature.verification.VerificationScreen
 import az.appa.mobile.theme.AppTheme
 import az.appa.mobile.utils.BoxManagerState
@@ -74,9 +75,15 @@ internal fun App() {
                             goBack = { navigator.pop() }
                         )
                     }
+                    scene(Route.SettingsScreen.route) {
+                        SettingsScreen(
+                            goBack = { navigator.pop() }
+                        )
+                    }
                     scene(Route.HomeScreen.route) {
                         HomeScreen(
-                            onNavBoxManager = { navigator.push(Route.BoxManagerScreen.route + "/$it") }
+                            onNavBoxManager = { navigator.push(Route.BoxManagerScreen.route + "/$it") },
+                            onNavSettings = { navigator.push(Route.SettingsScreen.route) }
                         )
                     }
                 }

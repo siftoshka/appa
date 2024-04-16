@@ -27,7 +27,8 @@ import org.koin.compose.koinInject
 
 @Composable
 fun HomeScreen(
-    onNavBoxManager: (state: String) -> Unit
+    onNavBoxManager: (state: String) -> Unit,
+    onNavSettings: () -> Unit
 ) {
     val viewModel = koinInject<HomeViewModel>()
     val state by viewModel.uiState.collectAsState()
@@ -51,7 +52,7 @@ fun HomeScreen(
                     hapticFeedback()
                     onNavBoxManager(BoxManagerState.CREATE.name)
                 },
-                onSettingsClick = {}
+                onSettingsClick = { onNavSettings() }
             )
             val box = Box(
                 id = 1, title = "Subway Surfers", subtitle = "New games every day",
